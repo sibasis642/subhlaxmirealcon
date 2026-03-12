@@ -1,0 +1,26 @@
+[
+  {
+    "title": "The Skyline Residence",
+    "location": "Botanda, Bhubaneswar",
+    "completion_year": "2025",
+    "duration": "11 Months",
+    "sqft": "2,613 sqft",
+    "image": "assets/images/portfolio/property_1.png"
+  },
+  {
+    "title": "Nova Estate",
+    "location": "Balakati, Bhubaneswar",
+    "completion_year": "2025",
+    "duration": "7 Months",
+    "sqft": "1,303 sqft",
+    "image": "assets/images/portfolio/property_2.png"
+  },
+  {
+    "title": "Azure Waterfront Villa",
+    "location": "Padhansahi, Jatni",
+    "completion_year": "2024",
+    "duration": "12 Months",
+    "sqft": "1,200 sqft",
+    "image": "assets/images/portfolio/property_3.png"
+  }
+]

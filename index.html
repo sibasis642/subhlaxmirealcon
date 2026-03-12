@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> | Custom Home Developers</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Meta -->
+    <meta name="description"
+        content="Suvhlaxmi Realcon builds stunning architectural custom homes on your land. Discover modern luxury construction.">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="assets/images/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="#" class="logo" id="header-logo">Suvhlaxmi<span class="text-accent">.</span></a>
+
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+
+        <div class="hero-content">
+            <h1>Build Your Dream <br> <span class="text-accent">Masterpiece</span></h1>
+            <p>We are a premier luxury real estate developer. Bring your empty lot, and we will construct an
+                architectural marvel tailored to your exact specifications.</p>
+            <div class="hero-btns">
+                <a href="#portfolio" class="btn btn-primary">View Past Projects</a>
+                <a href="#about" class="btn btn-outline">Our Process</a>
+            </div>
+        </div>
+
+        <!-- Glassmorphism Consultation Widget -->
+        <div class="search-widget glass-panel">
+            <div class="search-input-group" style="flex: 2;">
+                <label>Do you own land?</label>
+                <select id="form-land">
+                    <option value="yes">Yes, I own a lot</option>
+                    <option value="no">No, I'm looking for land</option>
+                </select>
+            </div>
+
+            <div class="search-input-group" style="flex: 3;">
+                <label>Your Name</label>
+                <input type="text" id="form-name" placeholder="John Doe">
+            </div>
+
+            <div class="search-input-group" style="flex: 3;">
+                <label>Email Address</label>
+                <input type="email" id="form-email" placeholder="john@example.com">
+            </div>
+
+            <button class="btn btn-primary search-btn" style="flex: 1;"><i class="fas fa-hammer"></i> Let's
+                Build</button>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section id="portfolio" class="properties section-padding">
+        <h2 class="section-title">Our <span class="text-accent">Portfolio</span></h2>
+        <p class="section-subtitle">A curated selection of the stunning custom homes we have constructed for our
+            clients.</p>
+
+        <div class="property-grid" id="portfolio-grid">
+            <!-- Javascript will populate portfolio items here from JSON -->
+            <div class="loading-text" style="grid-column: 1 / -1;">Loading portfolio projects...</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="#" class="btn btn-outline" style="padding: 15px 40px;">View Full Gallery</a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section-padding">
+        <h2 class="section-title">Client <span class="text-accent">Experiences</span></h2>
+        <p class="section-subtitle">Hear directly from the homeowners who trusted Suvhlaxmi Realcon to build their dream custom
+            homes.</p>
+
+        <div class="carousel-container glass-panel">
+            <div class="carousel-track" id="testimonial-track">
+                <!-- Javascript will populate slides here from JSON -->
+                <div class="loading-text">Loading client testimonials...</div>
+            </div>
+
+            <div class="carousel-controls">
+                <button class="carousel-play-pause btn-outline" id="play-pause-btn" aria-label="Pause Carousel">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <div class="carousel-indicators" id="carousel-indicators">
+                    <!-- Javascript will populate bullets here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section-padding">
+        <div class="about-img">
+            <img src="assets/images/hero_property.png" alt="Suvhlaxmi Realcon.">
+
+            <div class="about-stats glass-panel">
+                <div class="stat">
+                    <h3>5+</h3>
+                    <p>Years Building Homes</p>
+                </div>
+                <div class="stat">
+                    <h3>25+</h3>
+                    <p>Years Structural Warranty</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-content">
+            <h2>Mastering the <br> <span class="text-accent">Art of Construction</span></h2>
+            <p>At Suvhlaxmi Realcon we don't just construct houses. You provide the canvas (your land), and our visionary
+                architects and expert builders construct a one-of-a-kind sanctuary.</p>
+            <p>From the initial blueprints, through permitting, foundation, framing, and premium interior finishing, we
+                handle the entire lifecycle of custom home development.</p>
+
+            <ul class="about-list">
+                <li>
+                    <div class="check-icon"><i class="fas fa-check"></i></div> End-to-End Design & Build
+                </li>
+                <li>
+                    <div class="check-icon"><i class="fas fa-check"></i></div> Premium Material Procurement
+                </li>
+                 <li>
+                    <div class="check-icon"><i class="fas fa-check"></i></div> Quality Workmanship
+                </li>
+                <li>
+                    <div class="check-icon"><i class="fas fa-check"></i></div> On-Time Delivery
+                </li>
+            </ul>
+
+            <a href="#contact" class="btn btn-primary" style="margin-top: 1rem;">Start Your Build</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-col">
+                <a href="#" class="logo" id="footer-logo" style="margin-bottom: 20px; display:inline-block;">Suvhlaxmi<span
+                        class="text-accent">.</span></a>
+                <p>The premier luxury real estate builder and custom home developer.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#portfolio">Our Portfolio</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li id="contact-phone"><i class="fas fa-phone text-accent" style="margin-right: 10px;"></i> +1 (555)
+                        123-4567</li>
+                    <li id="contact-email"><i class="fas fa-envelope text-accent" style="margin-right: 10px;"></i>
+                        build@auradevelopment.com</li>
+                    <li id="contact-address"><i class="fas fa-map-marker-alt text-accent"
+                            style="margin-right: 10px;"></i> 100 Builders Blvd, Beverly Hills, CA</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Suvhlaxmi Realcon Pvt. Ltd. | All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
