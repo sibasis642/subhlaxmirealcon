@@ -74,17 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const destinationEmails = data.email.replace(/\s+/g, ''); // Remove spaces
 
             const subject = encodeURIComponent("New Custom Home Consultation Request");
-            const body = encodeURIComponent(
-`Hello Suvlaxmi Realcon Team,\r\n\r\n
-I would like to inquire about a custom home build consultation.\r\n\r\n
-Details:\r\n
-Name: ${userName}\r\n
-Email: ${userEmail}\r\n
-Owns Land: ${landStatus === 'yes' ? 'Yes' : 'No'}\r\n\r\n
-Please let me know the next steps.\r\n\r\n
-Thank you,\r\n
-${userName}`
-);
+            const newLine = "%0D%0A"; // URL-encoded \r\n
+
+const body = 
+  "Hello Suvlaxmi Realcon Team," + newLine + newLine +
+  "I would like to inquire about a custom home build consultation." + newLine + newLine +
+  "Details:" + newLine +
+  "Name: " + userName + newLine +
+  "Email: " + userEmail + newLine +
+  "Owns Land: " + (landStatus === 'yes' ? 'Yes' : 'No') + newLine + newLine +
+  "Please let me know the next steps." + newLine + newLine +
+  "Thank you," + newLine +
+  userName;
 
             // Open mail client
             window.location.href = `mailto:${destinationEmails}?subject=${subject}&body=${body}`;
