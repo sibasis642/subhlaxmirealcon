@@ -306,3 +306,17 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("Error loading company details: ", error);
     });
 });
+// Mobile Menu Toggle
+const toggle = document.querySelector(".menu-toggle");
+const nav = document.querySelector(".nav-links");
+
+toggle.addEventListener("click", () => {
+  nav.classList.toggle("active");
+});
+
+// Close menu when clicking link (important for UX)
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("active");
+  });
+});
