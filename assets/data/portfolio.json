@@ -1,6 +1,6 @@
 [
   {
-    "title": "The Skyline Residence",
+    "title": "Doha's Residence",
     "location": "Botanda, Bhubaneswar",
     "completion_year": "2025",
     "duration": "11 Months",
@@ -8,7 +8,7 @@
     "image": "assets/images/portfolio/property_1.png"
   },
   {
-    "title": "Nova Estate",
+    "title": "Mahanty's Residence",
     "location": "Balakati, Bhubaneswar",
     "completion_year": "2025",
     "duration": "7 Months",
@@ -16,7 +16,7 @@
     "image": "assets/images/portfolio/property_2.png"
   },
   {
-    "title": "Waterfront Villa",
+    "title": "Sahoo's Residence",
     "location": "Padhansahi, Jatni",
     "completion_year": "2024",
     "duration": "12 Months",

@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const landStatus = document.getElementById('form-land')?.value || 'unknown';
       const userName = document.getElementById('form-name')?.value || 'A Client';
-      const userEmail = document.getElementById('form-email')?.value || 'No Email Provided';
+      const userContact = document.getElementById('form-phone')?.value || 'No Contact Number Provided';
 
       const originalText = searchBtn.innerHTML;
       searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing Email...';
@@ -76,14 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const subject = encodeURIComponent("New Custom Home Consultation Request");
             const newLine = "%0D%0A"; // URL-encoded \r\n
 
-const body = 
-  "Hello Suvlaxmi Realcon Team," + newLine + newLine +
-  "I would like to inquire about a custom home build consultation." + newLine + newLine +
-  "Details:" + newLine +
+const body =
+  "Dear Suvlaxmi Realcon Team," + newLine + newLine +
+
+  "I would like to request a consultation for a home construction." + newLine + newLine +
+
+  "My details are as follows:" + newLine +
   "Name: " + userName + newLine +
-  "Email: " + userEmail + newLine +
-  "Owns Land: " + (landStatus === 'yes' ? 'Yes' : 'No') + newLine + newLine +
-  "Please let me know the next steps." + newLine + newLine +
+  "Contact Number: " + userContact + newLine +
+  "Land Ownership: " + (landStatus === 'yes' ? 'Yes, I own land' : 'No, I am looking for land') + newLine + newLine +
+
+  "Please contact me to discuss the next steps." + newLine + newLine +
+
   "Thank you," + newLine +
   userName;
 
