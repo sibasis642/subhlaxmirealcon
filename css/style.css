@@ -1033,7 +1033,19 @@ footer {
     width: auto;
 }
 @media (max-width: 768px) {
-    .navbar-brand img {
-        height: 45px;
-    }
+
+  header {
+    padding: 18px 5%;
+    min-height: 75px;
+  }
+
+  .logo img {
+    height: 55px;
+    width: auto;
+  }
+
+  .menu-toggle {
+    transform: scale(1.1);
+  }
+
 }
