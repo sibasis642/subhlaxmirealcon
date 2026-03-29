@@ -11,26 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ------------- Mobile Menu Toggle -------------
+ // ------------- Mobile Menu Toggle -------------
+document.addEventListener("DOMContentLoaded", function () {
+
   const menuToggle = document.querySelector('.menu-toggle');
   const navLinks = document.querySelector('.nav-links');
-  const bars = document.querySelectorAll('.bar');
 
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
+  if (!menuToggle || !navLinks) return;
 
-      if (navLinks.classList.contains('active')) {
-        bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-        bars[1].style.opacity = '0';
-        bars[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
-      } else {
-        bars[0].style.transform = 'none';
-        bars[1].style.opacity = '1';
-        bars[2].style.transform = 'none';
-      }
-    });
-  }
+  menuToggle.addEventListener('click', function () {
+
+    menuToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+
+  });
+
+});
 
   // ------------- Scroll Reveal Animations -------------
   const observeElements = document.querySelectorAll('.property-card, .section-title, .about-content, .carousel-container');
