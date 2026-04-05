@@ -489,7 +489,7 @@ footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.
 /* ═══ RESPONSIVE SMALL ≤480px ═══ */
 @media (max-width: 480px) {
   header { padding: 0 4%; height: 68px; }
-  .navbar-brand img { height: 40px; }
+  .navbar-brand img { height: 60px; }
   .section-padding { padding: 44px 4%; }
   .hero-content { padding: 0 4% 48px; }
   .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.16em; }
