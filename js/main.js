@@ -1,333 +1,328 @@
-document.addEventListener('DOMContentLoaded', () => {
+// ===================================
+//  SUVHLAXMI REALCON — MAIN JS
+// ===================================
 
-  // ------------- Navigation Scroll Effect -------------
-  const header = document.querySelector('header');
+const COMPANY = {
+  whatsapp: "918596024950",
+  phone: "8596024950",
+  phone2: "9910725122",
+  email: "suvhlaxmirealcon@gmail.com",
+  address: "Plot No-252, Chhotaraypur, Near AIIMS, Patrapada, Bhubaneswar-751019"
+};
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
+// ─── Hero Slideshow ───
+(function initSlideshow() {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  let current = 0;
+  let autoTimer;
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (idx + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(next, 5000);
+  }
+
+  document.querySelector('.slide-next').addEventListener('click', () => { next(); startAuto(); });
+  document.querySelector('.slide-prev').addEventListener('click', () => { prev(); startAuto(); });
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => { goTo(+dot.dataset.slide); startAuto(); });
   });
 
- // ------------- Mobile Menu Toggle -------------
-document.addEventListener("DOMContentLoaded", function () {
+  startAuto();
+})();
 
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
 
-  if (!menuToggle || !navLinks) return;
-
-  menuToggle.addEventListener('click', function () {
-
-    menuToggle.classList.toggle('active');
-    navLinks.classList.toggle('active');
-
-  });
-
+// ─── Header scroll effect ───
+const header = document.querySelector('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 60);
+  document.querySelector('.scroll-top').classList.toggle('visible', window.scrollY > 400);
 });
 
-  // ------------- Scroll Reveal Animations -------------
-  const observeElements = document.querySelectorAll('.property-card, .section-title, .about-content, .carousel-container');
+// ─── Mobile Nav ───
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileNav = document.querySelector('.mobile-nav');
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  mobileNav.classList.toggle('open');
+});
+document.querySelectorAll('.mobile-nav a').forEach(a => {
+  a.addEventListener('click', () => {
+    menuToggle.classList.remove('active');
+    mobileNav.classList.remove('open');
+  });
+});
 
+// ─── Portfolio ───
+async function loadPortfolio() {
+  try {
+    const res = await fetch('data/portfolio.json');
+    const projects = await res.json();
+    const grid = document.getElementById('portfolio-grid');
+    grid.innerHTML = '';
+    projects.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = `portfolio-card reveal reveal-delay-${i % 3}`;
+      card.innerHTML = `
+        <div class="portfolio-img">
+          <img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.src='assets/images/header-logo.png'">
+          <div class="portfolio-img-overlay"><span class="view-btn">View Project</span></div>
+          <span class="portfolio-badge">${p.completion_year}</span>
+        </div>
+        <div class="portfolio-info">
+          <h3>${p.title}</h3>
+          <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i>${p.location}</p>
+          <div class="portfolio-meta">
+            <div class="portfolio-meta-item">
+              <span class="meta-label">Area</span>
+              <span class="meta-value">${p.sqft}</span>
+            </div>
+            <div class="portfolio-meta-item">
+              <span class="meta-label">Duration</span>
+              <span class="meta-value">${p.duration}</span>
+            </div>
+            <div class="portfolio-meta-item">
+              <span class="meta-label">Completed</span>
+              <span class="meta-value">${p.completion_year}</span>
+            </div>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+    initScrollReveal();
+  } catch(e) { console.error('Portfolio load error', e); }
+}
+
+// ─── Testimonials ───
+async function loadTestimonials() {
+  try {
+    const res = await fetch('data/testimonials.json');
+    const items = await res.json();
+    const track = document.getElementById('testimonials-track');
+    track.innerHTML = '';
+
+    // All 3 in one slide (or adapt per count)
+    const slide = document.createElement('div');
+    slide.className = 'testimonial-slide';
+    items.forEach(t => {
+      const initials = t.name.split(' ').map(w => w[0]).join('').toUpperCase();
+      const stars = Array(t.rating).fill('<i class="fas fa-star"></i>').join('');
+      const card = document.createElement('div');
+      card.className = 'testimonial-card reveal';
+      card.innerHTML = `
+        <div class="stars">${stars}</div>
+        <p class="testimonial-text">${t.message}</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img src="${t.image}" alt="${t.name}" 
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <span class="author-avatar-fallback" style="display:none">${initials}</span>
+          </div>
+          <div>
+            <div class="author-name">${t.name}</div>
+            <div class="author-location"><i class="fas fa-map-marker-alt" style="font-size:0.65rem; margin-right:4px; color:var(--blue-bright)"></i>${t.location}</div>
+          </div>
+        </div>`;
+      slide.appendChild(card);
+    });
+    track.appendChild(slide);
+    initScrollReveal();
+  } catch(e) { console.error('Testimonials load error', e); }
+}
+
+// ─── Scroll Reveal ───
+function initScrollReveal() {
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
       }
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ─── Enquiry Form ───
+function initEnquiryForm() {
+  const btn = document.getElementById('enquiry-submit');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const land = document.getElementById('form-land').value;
+    const name = document.getElementById('form-name').value.trim();
+    const phone = document.getElementById('form-phone').value.trim();
+
+    if (!name || !phone) {
+      alert('Please enter your name and phone number.');
+      return;
+    }
+
+    const msg = encodeURIComponent(
+      `Hello Suvhlaxmi Realcon! 👋\n\nI'm interested in building a custom home.\n\nName: ${name}\nPhone: ${phone}\nLand Status: ${land === 'yes' ? 'I own a plot' : 'Looking for land'}\n\nPlease get in touch with me.`
+    );
+    window.open(`https://api.whatsapp.com/send?phone=${COMPANY.whatsapp}&text=${msg}`, '_blank');
   });
+}
 
-  observeElements.forEach((el) => {
-    observer.observe(el);
+// ─── AI Chatbot (rule-based, free) ───
+const BOT_RESPONSES = {
+  greet: {
+    triggers: ['hello', 'hi', 'hey', 'namaste', 'good morning', 'good evening'],
+    response: `Namaste! 🙏 Welcome to Suvhlaxmi Realcon. I'm here to help you build your dream home. How can I assist you today?`
+  },
+  services: {
+    triggers: ['service', 'what do you do', 'build', 'construction', 'offer'],
+    response: `We offer **end-to-end custom home construction** on your land:\n\n• Architectural design & planning\n• Permit & approval assistance\n• Foundation to finishing\n• Premium material procurement\n• 25+ year structural warranty\n\nWhat would you like to know more about?`
+  },
+  cost: {
+    triggers: ['cost', 'price', 'rate', 'how much', 'budget', 'estimate', 'pricing'],
+    response: `Construction cost depends on area, design complexity, and material grade. Our projects typically range from **₹1,500 – ₹2,500 per sqft**.\n\nFor a detailed estimate tailored to your plot, please share your requirements and we'll get back to you.`
+  },
+  portfolio: {
+    triggers: ['project', 'portfolio', 'work', 'past', 'example', 'show', 'completed'],
+    response: `We have successfully delivered beautiful homes including:\n\n🏡 **Doha's Residence** – 2,613 sqft, Botanda, Bhubaneswar\n🏡 **Mahanty's Residence** – 1,303 sqft, Balakati, Bhubaneswar\n🏡 **Sahoo's Residence** – 1,200 sqft, Padhansahi, Jatni\n\nScroll up to see photos of each project!`
+  },
+  location: {
+    triggers: ['where', 'location', 'address', 'office', 'visit', 'bhubaneswar', 'odisha'],
+    response: `Our office is at:\n📍 Plot No-252, Chhotaraypur, Near AIIMS\nPatrapada, Bhubaneswar – 751019\n\nWe primarily serve Bhubaneswar and surrounding areas.`
+  },
+  contact: {
+    triggers: ['contact', 'phone', 'call', 'number', 'email', 'reach', 'talk'],
+    response: `You can reach us at:\n\n📞 8596024950 / 9910725122\n📧 suvhlaxmirealcon@gmail.com\n\nOr click the WhatsApp button on the right to chat directly! We respond within minutes.`
+  },
+  timeline: {
+    triggers: ['time', 'how long', 'duration', 'month', 'year', 'fast', 'quick'],
+    response: `Construction timelines depend on the home size:\n\n• **~1,200 sqft** – 6–9 months\n• **~2,000 sqft** – 9–12 months\n• **2,500+ sqft** – 12–18 months\n\nWe pride ourselves on on-time delivery!`
+  },
+  warranty: {
+    triggers: ['warranty', 'guarantee', 'quality', 'assurance', 'defect'],
+    response: `We offer a **25+ year structural warranty** on all our projects. Quality is at the core of everything we do — from material selection to final finishing.`
+  },
+  land: {
+    triggers: ['land', 'plot', 'site', 'own', 'already have'],
+    response: `That's great! We work on **your land** — you bring the plot and we turn it into your dream home. We also assist clients in finding suitable plots if needed.\n\nShare your plot details and we'll advise on the best approach.`
+  },
+  whatsapp: {
+    triggers: ['whatsapp', 'wa', 'message'],
+    response: `Click the green WhatsApp button on the bottom-right of the page to start a direct conversation with our team. We're available from 9 AM – 8 PM, Monday to Saturday.`
+  },
+  default: {
+    response: `I'm not sure I have the exact answer for that! 😊 For specific queries, please:\n\n📞 Call us: 8596024950\n💬 WhatsApp us using the button on this page\n\nOur team will be happy to assist you!`
+  }
+};
+
+function getBotResponse(input) {
+  const lower = input.toLowerCase();
+  for (const key in BOT_RESPONSES) {
+    if (key === 'default') continue;
+    if (BOT_RESPONSES[key].triggers.some(t => lower.includes(t))) {
+      return BOT_RESPONSES[key].response;
+    }
+  }
+  return BOT_RESPONSES.default.response;
+}
+
+function initChatbot() {
+  const toggleBtn = document.getElementById('chat-toggle');
+  const chatWindow = document.getElementById('chatbot-window');
+  const closeBtn = document.getElementById('chat-close');
+  const messagesEl = document.getElementById('chat-messages');
+  const inputEl = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+
+  if (!toggleBtn) return;
+
+  toggleBtn.addEventListener('click', () => {
+    chatWindow.classList.toggle('open');
   });
+  closeBtn.addEventListener('click', () => chatWindow.classList.remove('open'));
 
-  // ------------- Form Submission Logic -------------
-  const searchBtn = document.querySelector('.search-btn');
-  if (searchBtn) {
-    searchBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const landStatus = document.getElementById('form-land')?.value || 'unknown';
-      const userName = document.getElementById('form-name')?.value || 'A Client';
-      const userContact = document.getElementById('form-phone')?.value || 'No Contact Number Provided';
-
-      const originalText = searchBtn.innerHTML;
-      searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing Email...';
-      searchBtn.style.opacity = '0.7';
-
-      // Fetch the destination email
-      fetch('assets/data/companyDetails.json')
-        .then(res => res.json())
-        .then(data => {
-          if (data.email) {
-            // Determine multiple emails if comma separated
-            const destinationEmails = data.email.replace(/\s+/g, ''); // Remove spaces
-
-            const subject = encodeURIComponent("New Custom Home Consultation Request");
-            const newLine = "%0D%0A"; // URL-encoded \r\n
-
-const body =
-  "Dear Suvlaxmi Realcon Team," + newLine + newLine +
-
-  "I would like to request a consultation for a home construction." + newLine + newLine +
-
-  "My details are as follows:" + newLine +
-  "Name: " + userName + newLine +
-  "Contact Number: " + userContact + newLine +
-  "Land Ownership: " + (landStatus === 'yes' ? 'Yes, I own land' : 'No, I am looking for land') + newLine + newLine +
-
-  "Please contact me to discuss the next steps." + newLine + newLine +
-
-  "Thank you," + newLine +
-  userName;
-
-            // Open mail client
-            window.location.href = `mailto:${destinationEmails}?subject=${subject}&body=${body}`;
-
-            // Show success to user
-            searchBtn.innerHTML = '<i class="fas fa-check"></i> Mail Client Opened';
-            searchBtn.style.opacity = '1';
-            searchBtn.classList.remove('btn-primary');
-            searchBtn.style.backgroundColor = '#28a745';
-
-            setTimeout(() => {
-              searchBtn.innerHTML = originalText;
-              searchBtn.classList.add('btn-primary');
-              searchBtn.style.backgroundColor = '';
-            }, 4000);
-          } else {
-            throw new Error("No destination email found in companyDetails");
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          searchBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
-          setTimeout(() => { searchBtn.innerHTML = originalText; searchBtn.style.opacity = '1'; }, 3000);
-        });
-    });
+  function appendMsg(text, type) {
+    const msg = document.createElement('div');
+    msg.className = `msg ${type}`;
+    // Simple bold markdown support
+    msg.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    messagesEl.appendChild(msg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return msg;
   }
 
-  // ------------- Testimonial Carousel Logic -------------
-  const track = document.getElementById('testimonial-track');
-  const indicatorsContainer = document.getElementById('carousel-indicators');
+  function botReply(text) {
+    // Show typing
+    const typing = document.createElement('div');
+    typing.className = 'msg bot typing';
+    typing.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+    messagesEl.appendChild(typing);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
 
-  let currentSlide = 0;
-  let totalSlides = 0;
-  let carouselInterval;
-  let isPlaying = true;
-
-  // Fetch JSON and initialize carousel
-  if (track && indicatorsContainer) {
-    fetch('assets/data/testimonials.json')
-      .then(response => {
-        if (!response.ok) throw new Error("Could not fetch testimonials data");
-        return response.json();
-      })
-      .then(data => {
-        track.innerHTML = ''; // Clear loading text
-        totalSlides = data.length;
-
-        data.forEach((testimonial, index) => {
-          // Create slide
-          const slide = document.createElement('div');
-          slide.classList.add('testimonial-slide');
-          if (index === 0) slide.classList.add('active');
-
-          slide.innerHTML = `
-            <i class="fas fa-quote-left quote-icon"></i>
-            <p class="testimonial-msg">"${testimonial.message}"</p>
-            <img src="${testimonial.image}" alt="${testimonial.name}" class="client-img" onerror="this.src='https://via.placeholder.com/80?text=user'">
-            <div class="client-name">${testimonial.name}</div>
-          `;
-          track.appendChild(slide);
-
-          // Create indicator
-          const indicator = document.createElement('div');
-          indicator.classList.add('indicator');
-          if (index === 0) indicator.classList.add('active');
-
-          indicator.addEventListener('click', () => {
-            goToSlide(index);
-            if (isPlaying) resetInterval();
-          });
-
-          indicatorsContainer.appendChild(indicator);
-        });
-
-        // Initialize carousel play/pause logic
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        if (playPauseBtn) {
-          playPauseBtn.addEventListener('click', () => {
-            if (isPlaying) {
-              clearInterval(carouselInterval);
-              isPlaying = false;
-              playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-              startCarouselInterval();
-              isPlaying = true;
-              playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            }
-          });
-        }
-
-        // Initialize carousel auto-rotation (7 seconds)
-        startCarouselInterval();
-      })
-      .catch(error => {
-        console.error("Error loading testimonials: ", error);
-        track.innerHTML = '<div class="loading-text" style="color:var(--accent-primary);">Failed to load testimonials. Please try again later.</div>';
-      });
+    setTimeout(() => {
+      typing.remove();
+      appendMsg(text, 'bot');
+    }, 900 + Math.random() * 400);
   }
 
-  function updateCarouselUI() {
-    // Move track to show correct slide
-    track.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-    // Update active class on slides
-    const slides = Array.from(track.children);
-    slides.forEach((slide, index) => {
-      if (index === currentSlide) {
-        slide.classList.add('active');
-      } else {
-        slide.classList.remove('active');
-      }
-    });
-
-    // Update active class on indicators
-    const indicators = Array.from(indicatorsContainer.children);
-    indicators.forEach((indicator, index) => {
-      if (index === currentSlide) {
-        indicator.classList.add('active');
-      } else {
-        indicator.classList.remove('active');
-      }
-    });
+  function sendMessage(text) {
+    if (!text.trim()) return;
+    appendMsg(text, 'user');
+    inputEl.value = '';
+    // Hide quick replies after first message
+    document.querySelector('.chat-quick-replies').style.display = 'none';
+    botReply(getBotResponse(text));
   }
 
-  function goToSlide(index) {
-    currentSlide = index;
-    updateCarouselUI();
-  }
+  sendBtn.addEventListener('click', () => sendMessage(inputEl.value));
+  inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(inputEl.value); });
 
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateCarouselUI();
-  }
+  document.querySelectorAll('.quick-reply').forEach(btn => {
+    btn.addEventListener('click', () => sendMessage(btn.textContent));
+  });
+}
 
-  function startCarouselInterval() {
-    // 7000ms = 7 seconds
-    carouselInterval = setInterval(nextSlide, 7000);
-  }
-
-  function resetInterval() {
-    clearInterval(carouselInterval);
-    startCarouselInterval();
-  }
-
-  // ------------- Portfolio Fetch and Render Logic -------------
-  const portfolioGrid = document.getElementById('portfolio-grid');
-
-  if (portfolioGrid) {
-    fetch('assets/data/portfolio.json')
-      .then(response => {
-        if (!response.ok) throw new Error("Could not fetch portfolio data");
-        return response.json();
-      })
-      .then(data => {
-        portfolioGrid.innerHTML = ''; // Clear loading text
-
-        data.forEach((project, index) => {
-          const card = document.createElement('div');
-          card.classList.add('property-card');
-          // Start visible if we are just loading them in
-          // Or let the intersection observer handle them
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-
-          card.innerHTML = `
-            <div class="property-img-wrap">
-                <div class="property-badge">Completed ${project.completion_year}</div>
-                <img src="${project.image}" alt="${project.title}">
-                <div class="property-price">Custom Build</div>
-            </div>
-            <div class="property-info">
-                <h3 class="property-title">${project.title}</h3>
-                <div class="property-location"><i class="fas fa-map-marker-alt text-accent"></i> ${project.location}</div>
-                <div class="property-features">
-                    <span class="feature"><i class="fas fa-clock"></i> ${project.duration}</span>
-                    <span class="feature"><i class="fas fa-vector-square"></i> ${project.sqft}</span>
-                </div>
-            </div>
-          `;
-          portfolioGrid.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error("Error loading portfolio: ", error);
-        portfolioGrid.innerHTML = '<div class="loading-text" style="grid-column: 1 / -1; color:var(--accent-primary);">Failed to load portfolio projects.</div>';
-      });
-  }
-
-  // ------------- Company Details Fetch Logic -------------
-  fetch('assets/data/companyDetails.json')
-    .then(response => {
-      if (!response.ok) throw new Error("Could not fetch company details");
-      return response.json();
-    })
-    .then(data => {
-      const headerLogo = document.getElementById('header-logo');
-      const footerLogo = document.getElementById('footer-logo');
-      const contactPhone = document.getElementById('contact-phone');
-      const contactEmail = document.getElementById('contact-email');
-      const contactAddress = document.getElementById('contact-address');
-
-      if (data.name) {
-        // Split name into full text and add accent to the last character or just use it as is
-        // If they have a specific format, we can just replace the text
-        const nameHtml = `${data.name}<span class="text-accent">.</span>`;
-        if (headerLogo) headerLogo.innerHTML = nameHtml;
-        if (footerLogo) footerLogo.innerHTML = nameHtml;
-
-        // Update document title optionally
-        document.title = data.name + " | Custom Home Developers";
-      }
-
-      if (data.phone && contactPhone) {
-        contactPhone.innerHTML = `<i class="fas fa-phone text-accent" style="margin-right: 10px;"></i> ${data.phone}`;
-      }
-
-      if (data.email && contactEmail) {
-        contactEmail.innerHTML = `<i class="fas fa-envelope text-accent" style="margin-right: 10px;"></i> ${data.email}`;
-      } else if (!data.email && contactEmail) {
-        // Hide if no email provided
-        contactEmail.style.display = 'none';
-      }
-
-      if (data.address && contactAddress) {
-        contactAddress.innerHTML = `<i class="fas fa-map-marker-alt text-accent" style="margin-right: 10px;"></i> ${data.address}`;
-      }
-    })
-    .catch(error => {
-      console.error("Error loading company details: ", error);
-    });
-});
-// Mobile Menu Toggle
-const toggle = document.querySelector(".menu-toggle");
-const nav = document.querySelector(".nav-links");
-
-toggle.addEventListener("click", () => {
-  nav.classList.toggle("active");
+// ─── Scroll to top ───
+document.querySelector('.scroll-top').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// Close menu when clicking link (important for UX)
-document.querySelectorAll(".nav-links a").forEach(link => {
-  link.addEventListener("click", () => {
-    nav.classList.remove("active");
+// ─── Counter animation ───
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 1800;
+    const step = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current) + (el.dataset.suffix || '');
+      if (current >= target) clearInterval(timer);
+    }, 16);
   });
+}
+
+const statsObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    animateCounters();
+    statsObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+const statsEl = document.querySelector('.hero-stats');
+if (statsEl) statsObserver.observe(statsEl);
+
+// ─── Init ───
+document.addEventListener('DOMContentLoaded', () => {
+  loadPortfolio();
+  loadTestimonials();
+  initEnquiryForm();
+  initChatbot();
+  initScrollReveal();
 });
